@@ -1,0 +1,32 @@
+---
+- name: Install Nginx
+  hosts: all
+  
+
+  tasks:
+    - name: Install Nginx on Red Hat
+      yum:
+        name: nginx
+        state: present
+    
+    - name: start nginx
+      service: 
+        name: nginx
+        state: started
+
+    - name: Install Nginx on Ubuntu
+      when: ansible_distribution == "Ubuntu"
+      apt:
+        name: nginx
+        state: present
+
+    - name: Apply Page Template on Amazon Linux
+      template:
+        src: index.html
+        dest: /usr/share/nginx/html/index.html
+
+    - name: Apply Page Template on ubuntu
+      when: ansible_distribution == "Ubuntu"
+      template:
+        src: index.html
+        dest: /var/www/html/index.nginx-debian.html
